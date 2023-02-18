@@ -1,0 +1,72 @@
+{
+  "name": "open-chat",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@mahdikhashan/vue3-click-outside": "^0.1.2",
+    "@vueuse/core": "^9.5.0",
+    "axios": "^0.27.2",
+    "core-js": "^3.8.3",
+    "lodash": "^4.17.21",
+    "notiwind": "^1.2.6",
+    "socket.io-client": "^4.5.2",
+    "vue": "^3.2.13",
+    "vue3-emoji-picker": "^1.1.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@babel/eslint-parser": "^7.12.16",
+    "@fortawesome/fontawesome-svg-core": "^6.2.0",
+    "@fortawesome/free-brands-svg-icons": "^6.2.0",
+    "@fortawesome/free-regular-svg-icons": "^6.2.0",
+    "@fortawesome/free-solid-svg-icons": "^6.2.0",
+    "@fortawesome/vue-fontawesome": "^3.0.1",
+    "@headlessui/vue": "^1.5.0",
+    "@heroicons/vue": "^1.0.6",
+    "@popperjs/core": "^2.11.4",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/forms": "^0.5.3",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "@vuepic/vue-datepicker": "^3.0.0",
+    "autoprefixer": "^10.4.11",
+    "eslint": "^8.32.0",
+    "eslint-plugin-vue": "^9.9.0",
+    "postcss": "^8.4.16",
+    "tailwindcss": "^3.1.8",
+    "vue-cli-plugin-tailwind": "~3.0.0",
+    "vue-loader": "^17.0.0",
+    "vue-router": "^4.0.13",
+    "vue-spinner": "^1.0.4",
+    "vuedraggable": "^4.1.0",
+    "vuex": "^4.0.2"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "@babel/eslint-parser"
+    },
+    "rules": {
+      "vue/no-unused-vars": "off"
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ]
+}

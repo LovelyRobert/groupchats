@@ -1,0 +1,8 @@
+
+
+{
+    "description": "A list of all industries on LinkedIn, as of May 21, 2013",
+    "source": "http://robertwdempsey.com/liindustries",
+    "industries":
+    ["Technology","Business","Education","Health","Environment","Sports","Politics","Entertainment","Religion","Food and Drink","Travel","Automobiles","Art","Music","Fashion","Gardening","Home Improvement","Science","Nature","Animals","Finance","Law","Gaming","Social Media","Philosophy","Language","Relationships","History","Geography","Psychology"]
+  }
