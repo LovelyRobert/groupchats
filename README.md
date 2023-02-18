@@ -1,4 +1,4 @@
-# Full Stack Group chats APP
+# Full Stack Group Chats APP
 
 ## Table of contents
 
