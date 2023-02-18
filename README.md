@@ -74,8 +74,8 @@ $ npm install
 
 - `MAILER_HOST` - nodemailer host parameter ex: **"smtp.mail.yahoo.com"**
 - `MAILER_PORT` - nodemailer port parameter ex: **587**
-- `MAILER_USER` - nodemail user email parameter **ex: "example@yahoo.com"**
-- `MAILER_PASSWORD` - nodemail user mail **password**
+- `MAILER_USER` - nodemailer user email parameter **ex: "example@yahoo.com"**
+- `MAILER_PASSWORD` - nodemailer user mail **password**
 
 5. Run it using **npm** or **nodemon**(installed globally):
 
