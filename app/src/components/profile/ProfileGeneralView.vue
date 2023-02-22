@@ -506,7 +506,7 @@ const saveProfile = async () => {
       .dispatch("editProfile", { formData: formData.value })
       .then(async () => {
         await store.dispatch("fetchUser");
-        props.socket.emit("change socket info", store.state.user);
+        props.socket.emit("user:update:profile", store.state.user);
         fileUploaded.value = false;
         store.commit("updateProfileStatus");
         emit("reRender");
