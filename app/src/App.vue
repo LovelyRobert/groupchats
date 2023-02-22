@@ -71,21 +71,21 @@ onMounted(async () => {
         transports: ["websocket"],
       });
       socket.value.emit("connection");
-      socket.value.emit("join", store.state.user._id);
+      socket.value.emit("user:join", store.state.user._id);
       //Socket events
       socket.value.on("notification", (NotificationObject) => {
         notifications.value.unshift(NotificationObject);
       });
-      socket.value.on("banned", ({ roomId }) => {
+      socket.value.on("room:ban:disconnect", ({ roomId }) => {
         //Add the room to users' banned for the UI state update
         store.commit("updateUserBanned", roomId);
         //Automatically disconnect when banned
         router.push({ name: "Home" });
       });
-      socket.value.on("allowed", ({ roomId }) => {
+      socket.value.on("room:allow:update:user", ({ roomId }) => {
         store.commit("updateUserAllowed", roomId);
       });
-      socket.value.on("left somewhere", ({ roomId }) => {
+      socket.value.on("user:left:somewhere", ({ roomId }) => {
         if (roomId == router.currentRoute.value.params.roomId) {
           router.push({ name: "Rooms" });
         }

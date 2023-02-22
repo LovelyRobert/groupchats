@@ -380,7 +380,7 @@
       </div>
     </div>
   </div>
-  <room-chat-view-skeleton v-else />
+  <RoomChatViewSkeleton v-else />
 </template>
 
 <script setup>
@@ -547,7 +547,7 @@ onMounted(async () => {
       if (shownHistory.value.length == res[1].data.length) {
         showArrow.value = false;
       }
-      props.socket.emit("join", props.roomId);
+      props.socket.emit("user:join", props.roomId);
 
       //Avoid user added to connected again when refresh
       if (
@@ -570,17 +570,17 @@ onMounted(async () => {
 });
 
 onUnmounted(() => {
-  props.socket.emit("leave", props.roomId);
+  props.socket.emit("user:leave", props.roomId);
 });
 
-props.socket.on("user joined", async (user) => {
+props.socket.on("user:joined", async (user) => {
   if (!roomData.value.users.map((el) => el._id).includes(user._id)) {
     //Avoid user added to connected again when refresh
     roomData.value.users.push(user);
   }
 });
 
-props.socket.on("user left", async (user) => {
+props.socket.on("user:left", async (user) => {
   if (roomData.value.users.map((el) => el._id).includes(user._id)) {
     let indexLeft = roomData.value.users.map((el) => el._id).indexOf(user._id);
     roomData.value.users.splice(indexLeft, 1);
@@ -591,7 +591,7 @@ props.socket.on("user left", async (user) => {
 
 const myMessage = ref("");
 
-props.socket.on("user message", async (messageObject) => {
+props.socket.on("message:from:user", async (messageObject) => {
   if (messageObject.userId == store.state.user._id) {
     Object.assign(messageObject, classTypeObject.my_message);
     messages.value.push(messageObject);
@@ -628,7 +628,7 @@ const sendMessage = () => {
       myMessage.value,
       "message"
     );
-    props.socket.emit("send message", {
+    props.socket.emit("chat:message", {
       messageObject,
       roomId: props.roomId,
       roomName: roomData.value.title,
@@ -654,7 +654,7 @@ const getRecord = (filename) => {
     "",
     "voice"
   );
-  props.socket.emit("voice record", {
+  props.socket.emit("chat:voice", {
     messageObject,
     roomId: props.roomId,
     filename,
@@ -662,7 +662,7 @@ const getRecord = (filename) => {
   });
 };
 
-props.socket.on("record link", async (messageObject) => {
+props.socket.on("voice:from:user", async (messageObject) => {
   if (messageObject.userId == store.state.user._id) {
     Object.assign(messageObject, classTypeObject.my_voice);
     messages.value.push(messageObject);
@@ -696,7 +696,7 @@ const getImage = ({ filename, type }) => {
     "",
     "image"
   );
-  props.socket.emit("image upload", {
+  props.socket.emit("chat:image", {
     messageObject,
     roomId: props.roomId,
     roomOwner: roomData.value.created_by,
@@ -705,7 +705,7 @@ const getImage = ({ filename, type }) => {
   });
 };
 
-props.socket.on("show image", async (messageObject) => {
+props.socket.on("image:from:user", async (messageObject) => {
   if (messageObject.userId == store.state.user._id) {
     Object.assign(messageObject, classTypeObject.my_image);
     messages.value.push(messageObject);
@@ -737,12 +737,12 @@ const mentionUser = (user) => {
 
 //User Ban
 
-props.socket.on("user banned", (bannedUser) => {
+props.socket.on("room:ban:update:ui", (bannedUser) => {
   roomData.value.banned_users.push(bannedUser);
 });
 
 const banUser = (user) => {
-  props.socket.emit("ban user", {
+  props.socket.emit("room:ban", {
     roomId: props.roomId,
     roomName: roomData.value.title,
     bannedUser: user,
@@ -751,14 +751,14 @@ const banUser = (user) => {
 
 //User Allow
 
-props.socket.on("user allowed", (allowedUser) => {
+props.socket.on("room:allow:update:ui", (allowedUser) => {
   roomData.value.banned_users = roomData.value.banned_users.filter(
     (el) => el._id !== allowedUser._id
   );
 });
 
 const allowUser = (user) => {
-  props.socket.emit("allow user", {
+  props.socket.emit("room:allow", {
     roomId: props.roomId,
     roomName: roomData.value.title,
     allowedUser: user,
@@ -775,7 +775,7 @@ const isFavourite = computed(() => {
 
 const addFavourite = () => {
   if (!isFavourite.value) {
-    props.socket.emit("add favourite", props.roomId);
+    props.socket.emit("room:favourite:add", props.roomId);
     favourites.value.add(props.roomId);
     store.state.user.favourites.push(props.roomId);
     notify(
@@ -787,7 +787,7 @@ const addFavourite = () => {
       4000
     ); // 4s
   } else {
-    props.socket.emit("remove favourite", props.roomId);
+    props.socket.emit("room:favourite:remove", props.roomId);
     favourites.value.delete(props.roomId);
     store.state.user.favourites.splice(
       store.state.user.favourites.indexOf(props.roomId),
@@ -827,17 +827,17 @@ const typingInterval = ref(null);
 
 watchEffect((onInvalidate) => {
   if (myMessage.value.length) {
-    props.socket.emit("is typing", props.roomId);
+    props.socket.emit("chat:typing", props.roomId);
 
     onInvalidate(() => {
       if (myMessage.value.length) {
-        props.socket.emit("clear interval", props.roomId);
+        props.socket.emit("chat:typing:clear:interval", props.roomId);
       }
     });
   }
 });
 
-props.socket.on("user typing", async (user) => {
+props.socket.on("typing:from:user", async (user) => {
   typingUser.value = {
     nickname: user.nickname,
     profile_img: user.profile_img,
@@ -853,7 +853,7 @@ props.socket.on("user typing", async (user) => {
   }, 700);
 });
 
-props.socket.on("clear timeout", () => {
+props.socket.on("chat:typing:clear:timeout", () => {
   clearInterval(typingInterval.value);
 });
 
