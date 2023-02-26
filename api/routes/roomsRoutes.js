@@ -13,9 +13,8 @@ const storage = multer.diskStorage({
     const path = `./public/users/${req.decodedToken.id}/rooms/${req.body.title}`;
     if (!fs.existsSync(path)) {
       fs.mkdirSync(path, { recursive: true });
-
-      cb(null, path);
     }
+    cb(null, path);
   },
   filename: async function (req, file, cb) {
     const fileExtension =

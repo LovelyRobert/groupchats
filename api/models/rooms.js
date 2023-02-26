@@ -24,8 +24,8 @@ const roomSchema = new mongoose.Schema({
     required: [true, "Please choose a room language"],
   },
   created_by: {
-    type: String,
-    required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
   img: {
     type: String,
@@ -33,18 +33,14 @@ const roomSchema = new mongoose.Schema({
   },
   users: [
     {
-      id: String,
-      nickname: String,
-      profile_img: String,
-      description: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
   ],
   banned_users: [
     {
-      id: String,
-      nickname: String,
-      profile_img: String,
-      description: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
   ],
   status: {
@@ -53,6 +49,6 @@ const roomSchema = new mongoose.Schema({
   },
 });
 
-const Room = mongoose.model("room", roomSchema);
+const Room = mongoose.model("Room", roomSchema);
 
 module.exports = Room;

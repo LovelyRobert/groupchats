@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 
 const historySchema = new mongoose.Schema({
   room_id: {
-    type: String,
-    unique: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Room",
   },
   messages: [
     {
@@ -22,6 +22,6 @@ const historySchema = new mongoose.Schema({
   },
 });
 
-const History = mongoose.model("history", historySchema);
+const History = mongoose.model("History", historySchema);
 
 module.exports = History;

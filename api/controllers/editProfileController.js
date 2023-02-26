@@ -58,18 +58,6 @@ module.exports.editProfile_post = async (req, res) => {
         }
       );
     });
-    rooms.forEach(async (el) => {
-      await Room.updateOne(
-        { _id: el._id },
-        {
-          "banned_users.$[elem].nickname": nickname,
-          "banned_users.$[elem].description": description,
-        },
-        {
-          arrayFilters: [{ "elem._id": req.decodedToken.id }],
-        }
-      );
-    });
     //If a cover is uploaded
     if (req.file) {
       let fileExtension =
@@ -104,19 +92,7 @@ module.exports.editProfile_post = async (req, res) => {
           }
         );
       });
-      rooms.forEach(async (el) => {
-        await Room.updateOne(
-          { _id: el._id },
-          {
-            "banned_users.$[elem].profile_img": `${process.env.CLIENT_URL}/users/${req.decodedToken.id}/${newName}`,
-          },
-          {
-            arrayFilters: [{ "elem._id": req.decodedToken.id }],
-          }
-        );
-      });
     }
-
     //If cover is removed without update
     if (req.body.avatarRemoved == "true") {
       //1-Remove old file
@@ -145,17 +121,6 @@ module.exports.editProfile_post = async (req, res) => {
           },
           {
             arrayFilters: [{ "elem.userId": req.decodedToken.id }],
-          }
-        );
-      });
-      rooms.forEach(async (el) => {
-        await Room.updateOne(
-          { _id: el._id },
-          {
-            "banned_users.$[elem].profile_img": `${process.env.CLIENT_URL}/profiledefault.jpg`,
-          },
-          {
-            arrayFilters: [{ "elem._id": req.decodedToken.id }],
           }
         );
       });

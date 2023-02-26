@@ -162,21 +162,14 @@ module.exports.user_delete = async (req, res) => {
       let historyPromise = History.deleteOne({
         room_id: el,
       });
-      let favouritePromise = User.updateMany(
-        { favourites: { $elemMatch: { $eq: el } } },
-        {
-          $pull: { favourites: el },
-        }
-      );
-      await Promise.all([roomPromise, historyPromise, favouritePromise]);
+      await Promise.all([roomPromise, historyPromise]);
     });
     //Delete user data from rooms
     user.banned_from.forEach(async (el) => {
       await Room.findByIdAndUpdate(el, {
-        $pull: { banned_users: { _id: req.decodedToken.id } },
+        $pull: { banned_users: req.decodedToken.id },
       });
     });
-
     //Remove all user files
     const path = `./public/users/${req.decodedToken.id}`;
     if (fs.existsSync(path)) {

@@ -73,9 +73,7 @@
 
                 <div
                   v-if="
-                    !dropped ||
-                    coverLink ==
-                      process.env.VUE_APP_API_ENDPOINT + '/default-banner.jpg'
+                    !dropped || coverLink == apiUrl + '/default-banner.jpg'
                   ">
                   <label class="block text-sm font-medium text-gray-700"
                     >Cover photo</label
@@ -257,6 +255,8 @@ const props = defineProps({
 const emit = defineEmits(["fetchError"]);
 
 const store = useStore();
+
+const apiUrl = process.env.VUE_APP_API_ENDPOINT;
 
 onMounted(async () => {
   await store
