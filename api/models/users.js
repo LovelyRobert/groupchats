@@ -75,17 +75,20 @@ const userSchema = new mongoose.Schema({
   },
   rooms: [
     {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Room",
     },
   ],
   favourites: [
     {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Room",
     },
   ],
   banned_from: [
     {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Room",
     },
   ],
   notifications: [
@@ -132,7 +135,7 @@ userSchema.statics.login = async function (email, password) {
 };
 
 //Here we create the model based on the schema
-const User = mongoose.model("user", userSchema);
+const User = mongoose.model("User", userSchema);
 
 //Export the model
 module.exports = User;

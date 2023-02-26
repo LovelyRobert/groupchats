@@ -15,7 +15,7 @@ module.exports = (io, socket) => {
       socket.to(roomId).emit("user:left", socket.user);
       socket.to(socket.user._id).emit("left:somewhere", { roomId });
       await Room.findByIdAndUpdate(roomId, {
-        $pull: { users: { _id: socket.user._id } },
+        $pull: { users: socket.user._id },
       });
     });
   };
@@ -25,7 +25,7 @@ module.exports = (io, socket) => {
       console.log(socket.user.nickname + " joined: " + roomId);
       socket.join(roomId);
       await Room.findByIdAndUpdate(roomId, {
-        $addToSet: { users: socket.user },
+        $addToSet: { users: socket.user._id },
       });
       socket.to(roomId).emit("user:joined", socket.user);
     }
@@ -37,7 +37,7 @@ module.exports = (io, socket) => {
       socket.to(socket.user._id).emit("user:left:somewhere", { roomId });
       console.log(socket.user.nickname + " left: " + roomId);
       await Room.findByIdAndUpdate(roomId, {
-        $pull: { users: { _id: socket.user._id } },
+        $pull: { users: socket.user._id },
       });
       socket.to(roomId).emit("user:left", socket.user);
     }

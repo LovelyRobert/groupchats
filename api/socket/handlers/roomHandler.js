@@ -4,7 +4,7 @@ const User = require("../../models/users");
 module.exports = (io, socket) => {
   const handleBan = async ({ roomId, roomName, bannedUser }) => {
     let roomPromise = Room.findByIdAndUpdate(roomId, {
-      $addToSet: { banned_users: bannedUser },
+      $addToSet: { banned_users: bannedUser._id },
     });
     let userPromise = User.findByIdAndUpdate(bannedUser._id, {
       $addToSet: { banned_from: roomId },
@@ -47,7 +47,7 @@ module.exports = (io, socket) => {
 
   const handleAllow = async ({ roomId, roomName, allowedUser }) => {
     let roomPromise = Room.findByIdAndUpdate(roomId, {
-      $pull: { banned_users: { _id: allowedUser._id } },
+      $pull: { banned_users: allowedUser._id },
     });
     let userPromise = User.findByIdAndUpdate(allowedUser._id, {
       $pull: { banned_from: roomId },

@@ -1,7 +1,7 @@
+const mongoose = require("mongoose");
+const User = require("../models/users");
 const Room = require("../models/rooms");
 const History = require("../models/history");
-const User = require("../models/users");
-const mongoose = require("mongoose");
 const fs = require("fs");
 const fsPromises = require("fs").promises;
 
@@ -85,7 +85,7 @@ module.exports.createRoom_post = async (req, res) => {
       }
       let historyPromise = History.create({ room_id: room._id.toString() });
       let userPromise = user.updateOne({
-        $push: { rooms: room._id.toString() },
+        $push: { rooms: room._id },
       });
       await Promise.all([historyPromise, userPromise]);
       res.status(201).json("Room created successfully!");
@@ -202,8 +202,10 @@ module.exports.editRoom_post = async (req, res) => {
 
 module.exports.fetchRooms_get = async (req, res) => {
   try {
-    const Rooms = await Room.find(req.query);
-    res.status(201).json(Rooms);
+    const rooms = await Room.find(req.query)
+      .populate("users", "nickname profile_img description")
+      .populate("banned_users", "nickname profile_img description");
+    res.status(201).json(rooms);
   } catch (err) {
     res.status(401).json("Something went wrong...");
   }
@@ -214,7 +216,9 @@ module.exports.fetchSingleRoom_get = async (req, res) => {
   let ObjectId = mongoose.Types.ObjectId;
   if (ObjectId.isValid(roomId)) {
     try {
-      const room = await Room.findById(roomId);
+      const room = await Room.findById(roomId)
+        .populate("users", "nickname profile_img description")
+        .populate("banned_users", "nickname profile_img description");
       if (room) {
         res.status(201).json(room);
       } else {
@@ -241,16 +245,16 @@ module.exports.removeSingleRoom_get = async (req, res) => {
         let creatorPromise = User.findByIdAndUpdate(req.decodedToken.id, {
           $pull: { rooms: roomId },
         });
-        let usersPromise = User.updateMany(
-          { banned_from: { $elemMatch: { $eq: roomId } } },
-          {
-            $pull: { banned_from: roomId },
-          }
-        );
         let favouritePromise = User.updateMany(
           { favourites: { $elemMatch: { $eq: roomId } } },
           {
             $pull: { favourites: roomId },
+          }
+        );
+        let bannedPromise = User.updateMany(
+          { banned_from: { $elemMatch: { $eq: roomId } } },
+          {
+            $pull: { banned_from: roomId },
           }
         );
         let historyPromise = History.deleteOne({ room_id: roomId });
@@ -259,9 +263,9 @@ module.exports.removeSingleRoom_get = async (req, res) => {
         await Promise.all([
           roomPromise,
           creatorPromise,
-          usersPromise,
           historyPromise,
           favouritePromise,
+          bannedPromise,
           removePromise,
         ]);
         res.status(200).json();
