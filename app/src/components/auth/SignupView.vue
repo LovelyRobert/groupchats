@@ -156,6 +156,8 @@ import { useStore } from "vuex";
 
 const store = useStore();
 
+const apiUrl = process.env.VUE_APP_API_ENDPOINT;
+
 const loading = ref(false);
 
 const showPassword = ref(false);
