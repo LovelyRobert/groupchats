@@ -1,5 +1,11 @@
 # Full Stack Group Chats APP
 
+![Home view](captures/Capture1.PNG)
+
+![Rooms view](captures/Capture2.PNG)
+
+![Chat view](captures/Capture3.PNG)
+
 ## Table of contents
 
 - [Overview](#overview)
