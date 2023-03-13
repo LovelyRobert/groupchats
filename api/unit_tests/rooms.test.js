@@ -56,7 +56,7 @@ describe("Testin rooms create,edit and delete", () => {
     const res = await request(app)
       .get(`/room/${roomId}`)
       .set("Cookie", [`jwt=${token}`]);
-    expect(res.statusCode).toBe(201);
+    expect(res.statusCode).toBe(200);
     expect(res.body._id).toBe(roomId);
     expect(res.body.title).toBe("roomtitle");
     expect(res.body.description).toBe("some desctiption for testing the room.");
@@ -68,7 +68,7 @@ describe("Testin rooms create,edit and delete", () => {
     const res = await request(app)
       .get(`/rooms?created_by=${userId}`)
       .set("Cookie", [`jwt=${token}`]);
-    expect(res.statusCode).toBe(201);
+    expect(res.statusCode).toBe(200);
     expect(res.body.length).toBeGreaterThan(0);
     expect(res.body.length).toBe(1);
     expect(res.body[0]._id).toBe(roomId);
@@ -82,7 +82,7 @@ describe("Testin rooms create,edit and delete", () => {
 
   it("Should edit room in database with 201 status", async () => {
     const res = await request(app)
-      .post(`/room/${roomId}/edit`)
+      .put(`/room/${roomId}`)
       .send({
         title: "newroomtitle",
         description: "new desctiption form testing the room.",
@@ -90,7 +90,7 @@ describe("Testin rooms create,edit and delete", () => {
         language: "French",
       })
       .set("Cookie", [`jwt=${token}`]);
-    expect(res.statusCode).toBe(201);
+    expect(res.statusCode).toBe(200);
     expect(res.body).toBe("Room updated successfully!");
   });
 
@@ -98,7 +98,7 @@ describe("Testin rooms create,edit and delete", () => {
     const res = await request(app)
       .get(`/room/${roomId}`)
       .set("Cookie", [`jwt=${token}`]);
-    expect(res.statusCode).toBe(201);
+    expect(res.statusCode).toBe(200);
     expect(res.body._id).toBe(roomId);
     expect(res.body.title).toBe("newroomtitle");
     expect(res.body.description).toBe("new desctiption form testing the room.");
@@ -110,7 +110,7 @@ describe("Testin rooms create,edit and delete", () => {
     const res = await request(app)
       .get(`/rooms?created_by=${userId}`)
       .set("Cookie", [`jwt=${token}`]);
-    expect(res.statusCode).toBe(201);
+    expect(res.statusCode).toBe(200);
     expect(res.body.length).toBeGreaterThan(0);
     expect(res.body.length).toBe(1);
     expect(res.body[0]._id).toBe(roomId);
@@ -126,14 +126,14 @@ describe("Testin rooms create,edit and delete", () => {
     const res = await request(app)
       .get(`/rooms`)
       .set("Cookie", [`jwt=${token}`]);
-    expect(res.statusCode).toBe(201);
+    expect(res.statusCode).toBe(200);
     expect(res.body.length).toBeGreaterThan(0);
   });
 
   it("Should return room object with 200 status", async () => {
     const res = await request(app)
-      .get(`/room/${roomId}/remove`)
+      .delete(`/room/${roomId}`)
       .set("Cookie", [`jwt=${token}`]);
-    expect(res.statusCode).toBe(200);
+    expect(res.statusCode).toBe(204);
   });
 });

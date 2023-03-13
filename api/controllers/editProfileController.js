@@ -20,7 +20,7 @@ const handleEditErrors = (err) => {
 
 //Controllers
 
-module.exports.editProfile_post = async (req, res) => {
+module.exports.editProfile_put = async (req, res) => {
   const { nickname, description } = req.body;
   const path = `./public/users/${req.decodedToken.id}`;
   try {
@@ -141,7 +141,7 @@ module.exports.editProfile_post = async (req, res) => {
   }
 };
 
-module.exports.editInfo_post = async (req, res) => {
+module.exports.editInfo_put = async (req, res) => {
   const { first_name, last_name, country, address, city, state } = req.body;
   try {
     await User.findOneAndUpdate(

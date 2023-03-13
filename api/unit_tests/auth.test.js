@@ -56,7 +56,7 @@ describe("Testing normal authentification", () => {
     const res = await request(app)
       .get("/logout")
       .set("Cookie", [`jwt=${token}`]);
-    expect(res.statusCode).toBe(200);
+    expect(res.statusCode).toBe(204);
   });
   userId = null;
   token = "";
@@ -73,10 +73,4 @@ describe("Testing normal authentification", () => {
       expiresIn: maxAge,
     });
   });
-  // it("should return 200 status", async () => {
-  //   const res = await request(app)
-  //     .delete("/user")
-  //     .set("Cookie", [`jwt=${token}`]);
-  //   expect(res.statusCode).toBe(200);
-  // });
 });

@@ -33,9 +33,9 @@ router.put(
   "/user/profile",
   verifyToken,
   upload.single("file"),
-  editProfileController.editProfile_post
+  editProfileController.editProfile_put
 );
 
-router.put("/user/info", verifyToken, editProfileController.editInfo_post);
+router.put("/user/info", verifyToken, editProfileController.editInfo_put);
 
 module.exports = router;

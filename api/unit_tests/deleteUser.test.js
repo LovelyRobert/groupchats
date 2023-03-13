@@ -38,6 +38,6 @@ describe("Testing user deletion", () => {
     const res = await request(app)
       .delete("/user")
       .set("Cookie", [`jwt=${token}`]);
-    expect(res.statusCode).toBe(200);
+    expect(res.statusCode).toBe(204);
   });
 });

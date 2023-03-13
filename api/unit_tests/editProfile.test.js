@@ -9,7 +9,7 @@ require("dotenv").config();
 /* Connecting to the database before each test. */
 beforeAll(async () => {
   await mongoose.connect(process.env.DATABASE_URL);
-}, 14000);
+}, 50000);
 
 /* Closing database connection after each test. */
 afterAll(async () => {
@@ -36,18 +36,18 @@ describe("Testing profile edit", () => {
   });
   it("should edit database user and return 201 status with success message", async () => {
     const res = await request(app)
-      .post("/edit/profile")
+      .put("/user/profile")
       .send({
         nickname: "newname",
         description: "some description of my profile.",
       })
       .set("Cookie", [`jwt=${token}`]);
-    expect(res.statusCode).toBe(201);
+    expect(res.statusCode).toBe(200);
     expect(res.body).toBe("Your account was successfully updated!");
   });
   it("should edit database user and return 201 status with success message", async () => {
     const res = await request(app)
-      .post("/edit/info")
+      .put("/user/info")
       .send({
         first_name: "firstname",
         last_name: "lastname",
@@ -57,7 +57,7 @@ describe("Testing profile edit", () => {
         state: "",
       })
       .set("Cookie", [`jwt=${token}`]);
-    expect(res.statusCode).toBe(201);
+    expect(res.statusCode).toBe(200);
     expect(res.body).toBe("Your account was successfully updated!");
   });
   it("should return the user object with 200 status", async () => {
