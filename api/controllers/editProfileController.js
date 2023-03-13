@@ -13,7 +13,7 @@ const handleEditErrors = (err) => {
   if (err.message.toLowerCase().includes("validation failed")) {
     Object.values(err.errors).forEach(({ properties }) => {
       errors[properties.path] = properties.message;
-    }); //to get an array of the values of the err.errors object and extract each one with destructuring to get only properties and place each one of them in an array
+    });
   }
   return errors;
 };
@@ -122,7 +122,7 @@ module.exports.editProfile_post = async (req, res) => {
         );
       });
     }
-    res.status(201).json("Your account was successfully updated!");
+    res.status(200).json("Your account was successfully updated!");
   } catch (err) {
     //If there is validation error and user uploaded a file
     if (req.file) {
@@ -137,7 +137,7 @@ module.exports.editProfile_post = async (req, res) => {
     }
     //Error handling
     const errors = handleEditErrors(err);
-    res.status(401).json({ errors });
+    res.status(400).json({ errors });
   }
 };
 
@@ -160,9 +160,9 @@ module.exports.editInfo_post = async (req, res) => {
         runValidators: true,
       }
     );
-    res.status(201).json("Your account was successfully updated!");
+    res.status(200).json("Your account was successfully updated!");
   } catch (err) {
     const errors = handleEditErrors(err);
-    res.status(401).json({ errors });
+    res.status(400).json({ errors });
   }
 };

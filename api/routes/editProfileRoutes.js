@@ -29,13 +29,13 @@ const upload = multer({
 
 const router = Router();
 
-router.post(
-  "/edit/profile",
+router.put(
+  "/user/profile",
   verifyToken,
   upload.single("file"),
   editProfileController.editProfile_post
 );
 
-router.post("/edit/info", verifyToken, editProfileController.editInfo_post);
+router.put("/user/info", verifyToken, editProfileController.editInfo_post);
 
 module.exports = router;

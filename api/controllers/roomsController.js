@@ -103,11 +103,11 @@ module.exports.createRoom_post = async (req, res) => {
     }
     //Error handling
     const errors = handleErrors(err);
-    res.status(401).json({ errors });
+    res.status(400).json({ errors });
   }
 };
 
-module.exports.editRoom_post = async (req, res) => {
+module.exports.editRoom_put = async (req, res) => {
   const { title, description, category, language } = req.body;
   const { roomId } = req.params;
   const oldPath = `./public/users/${req.decodedToken.id}/rooms/${title}`;
@@ -180,7 +180,7 @@ module.exports.editRoom_post = async (req, res) => {
             img: `${process.env.CLIENT_URL}/default-banner.jpg`,
           });
         }
-        res.status(201).json("Room updated successfully!");
+        res.status(200).json("Room updated successfully!");
       } catch (err) {
         //If there is validation error and user uploaded a file
         if (title.length) {
@@ -192,13 +192,13 @@ module.exports.editRoom_post = async (req, res) => {
         }
         //Handle validation errors
         const errors = handleErrors(err);
-        res.status(401).json({ errors });
+        res.status(400).json({ errors });
       }
     } else {
-      res.status(401).json("Non authorized :)");
+      res.status(403).json("Forbidden :)");
     }
   } else {
-    res.status(401).json("Bad request.");
+    res.status(400).json("Bad request.");
   }
 };
 
@@ -207,9 +207,9 @@ module.exports.fetchRooms_get = async (req, res) => {
     const rooms = await Room.find(req.query)
       .populate("users", "nickname profile_img description")
       .populate("banned_users", "nickname profile_img description");
-    res.status(201).json(rooms);
+    res.status(200).json(rooms);
   } catch (err) {
-    res.status(401).json("Something went wrong...");
+    res.status(500).json("Something went wrong...");
   }
 };
 
@@ -222,19 +222,19 @@ module.exports.fetchSingleRoom_get = async (req, res) => {
         .populate("users", "nickname profile_img description")
         .populate("banned_users", "nickname profile_img description");
       if (room) {
-        res.status(201).json(room);
+        res.status(200).json(room);
       } else {
         res.status(404).json({});
       }
     } catch (err) {
-      res.status(401).json("Something went wrong...");
+      res.status(500).json("Something went wrong...");
     }
   } else {
-    res.status(404).json("Bad request.");
+    res.status(400).json("Bad request.");
   }
 };
 
-module.exports.removeSingleRoom_get = async (req, res) => {
+module.exports.removeSingleRoom_delete = async (req, res) => {
   const { roomId } = req.params;
   const path = `./public/users/${req.decodedToken.id}/rooms/${roomId}`;
   let ObjectId = mongoose.Types.ObjectId;
@@ -270,14 +270,14 @@ module.exports.removeSingleRoom_get = async (req, res) => {
           bannedPromise,
           removePromise,
         ]);
-        res.status(200).json();
+        res.status(204).json();
       } catch (err) {
-        res.status(401).json("Something went wrong...");
+        res.status(500).json("Something went wrong...");
       }
     } else {
-      res.status(401).json("Non authorized :)");
+      res.status(403).json("Forbidden :)");
     }
   } else {
-    res.status(401).json("Bad request.");
+    res.status(400).json("Bad request.");
   }
 };

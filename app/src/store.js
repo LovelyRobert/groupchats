@@ -68,8 +68,8 @@ const store = createStore({
     },
     removeRoom(context, payload) {
       const { roomId } = payload;
-      return axios.get(
-        process.env.VUE_APP_API_ENDPOINT + `/room/${roomId}/remove`,
+      return axios.delete(
+        process.env.VUE_APP_API_ENDPOINT + `/room/${roomId}`,
         {
           withCredentials: true,
           credentials: "include",
@@ -92,8 +92,8 @@ const store = createStore({
     },
     editProfile(context, payload) {
       const { formData } = payload;
-      return axios.post(
-        process.env.VUE_APP_API_ENDPOINT + "/edit/profile",
+      return axios.put(
+        process.env.VUE_APP_API_ENDPOINT + "/user/profile",
         formData,
         {
           withCredentials: true,
@@ -106,8 +106,8 @@ const store = createStore({
     },
     editInfo(context, payload) {
       const { formInfo } = payload;
-      return axios.post(
-        process.env.VUE_APP_API_ENDPOINT + "/edit/info",
+      return axios.put(
+        process.env.VUE_APP_API_ENDPOINT + "/user/info",
         formInfo,
         {
           withCredentials: true,
@@ -152,8 +152,8 @@ const store = createStore({
     },
     editRoom(context, payload) {
       const { roomId, formData } = payload;
-      return axios.post(
-        process.env.VUE_APP_API_ENDPOINT + `/room/${roomId}/edit`,
+      return axios.put(
+        process.env.VUE_APP_API_ENDPOINT + `/room/${roomId}`,
         formData,
         {
           withCredentials: true,

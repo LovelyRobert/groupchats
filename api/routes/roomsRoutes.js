@@ -45,17 +45,17 @@ router.post(
 );
 router.get("/room/:roomId", verifyToken, roomsController.fetchSingleRoom_get);
 
-router.post(
-  "/room/:roomId/edit",
+router.put(
+  "/room/:roomId",
   verifyToken,
   upload.single("file"),
-  roomsController.editRoom_post
+  roomsController.editRoom_put
 );
 
-router.get(
-  "/room/:roomId/remove",
+router.delete(
+  "/room/:roomId",
   verifyToken,
-  roomsController.removeSingleRoom_get
+  roomsController.removeSingleRoom_delete
 );
 
 module.exports = router;

@@ -54,9 +54,9 @@ const handleErrors = (err) => {
 module.exports.logout_get = (req, res) => {
   try {
     res.cookie("jwt", "");
-    res.status(200).json();
+    res.status(204).json();
   } catch (err) {
-    res.status(401).json("Something went wrong...");
+    res.status(500).json("Something went wrong...");
   }
 };
 
@@ -80,7 +80,7 @@ module.exports.signup_post = async (req, res) => {
     res.status(201).json(user._id);
   } catch (err) {
     const errors = handleErrors(err);
-    res.status(401).json({ errors });
+    res.status(400).json({ errors });
   }
 };
 
@@ -101,7 +101,7 @@ module.exports.login_post = async (req, res) => {
     res.status(200).json(user._id);
   } catch (err) {
     const errors = handleErrors(err);
-    res.status(401).json({ errors });
+    res.status(400).json({ errors });
   }
 };
 
@@ -145,7 +145,7 @@ module.exports.user_get = async (req, res) => {
       notifications,
     });
   } catch (err) {
-    res.status(401).json("Something went wrong...");
+    res.status(500).json("Something went wrong...");
   }
 };
 
@@ -179,8 +179,8 @@ module.exports.user_delete = async (req, res) => {
     let deletePromise = user.deleteOne();
     let cookiePromise = res.cookie("jwt", "");
     await Promise.all([deletePromise, cookiePromise]);
-    res.status(200).json();
+    res.status(204).json();
   } catch (err) {
-    res.status(401).json("Something went wrong...");
+    res.status(500).json("Something went wrong...");
   }
 };

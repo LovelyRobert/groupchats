@@ -42,8 +42,7 @@ module.exports.send_mail_post = async (req, res) => {
       // send mail with defined transport object
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-          console.log(error);
-          return res.status(401).json("Something went wrong...");
+          return res.status(500).json("Something went wrong...");
         }
         console.log("Message sent: %s", info.messageId);
         res.status(200).json("Your message was successfully sent!");

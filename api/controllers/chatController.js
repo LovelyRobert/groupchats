@@ -3,11 +3,11 @@ const mongoose = require("mongoose");
 const User = require("../models/users");
 
 module.exports.uploadVoice_post = (req, res) => {
-  res.status(200).json();
+  res.status(204).json();
 };
 
 module.exports.sendPicture_post = (req, res) => {
-  res.status(200).json();
+  res.status(204).json();
 };
 
 module.exports.history_get = async (req, res) => {
@@ -38,10 +38,10 @@ module.exports.history_get = async (req, res) => {
         res.status(404).json();
       }
     } catch (err) {
-      res.status(401).json("Something went wrong...");
+      res.status(500).json("Something went wrong...");
     }
   } else {
-    res.status(404).json("Bad request.");
+    res.status(400).json("Bad request.");
   }
 };
 
@@ -52,8 +52,8 @@ module.exports.notifications_seen = async (req, res) => {
       { "notifications.$[elem].seen": true },
       { arrayFilters: [{ "elem.seen": false }] }
     );
-    res.status(200).json();
+    res.status(204).json();
   } catch (err) {
-    res.status(401).json("Something went wrong...");
+    res.status(500).json("Something went wrong...");
   }
 };

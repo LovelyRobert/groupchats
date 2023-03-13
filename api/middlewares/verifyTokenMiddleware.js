@@ -5,7 +5,7 @@ module.exports.verifyToken = (req, res, next) => {
   if (token) {
     jwt.verify(token, process.env.JWT_SECRET, async (err, decodedToken) => {
       if (err) {
-        res.status(401).json();
+        res.status(403).json();
       } else {
         req.decodedToken = decodedToken;
         next();
