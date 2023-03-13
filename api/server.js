@@ -76,3 +76,5 @@ const onConnection = async (socket) => {
 };
 
 io.on("connection", onConnection);
+
+module.exports = app;

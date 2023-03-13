@@ -104,7 +104,6 @@ const userSchema = new mongoose.Schema({
 
 //Fire a function after documents are saved to database, we use mongoose hooks for that schema.post(event, callback)
 userSchema.post("save", (doc, next) => {
-  console.log(doc);
   next();
 });
 

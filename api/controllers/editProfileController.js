@@ -39,9 +39,6 @@ module.exports.editProfile_post = async (req, res) => {
     const histories = await History.find({
       messages: { $elemMatch: { userId: req.decodedToken.id } },
     });
-    const rooms = await Room.find({
-      banned_users: { $elemMatch: { _id: req.decodedToken.id } },
-    });
     //create the user folder
     if (!fs.existsSync(path)) {
       fs.mkdirSync(path, { recursive: true });

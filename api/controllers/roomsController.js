@@ -88,7 +88,9 @@ module.exports.createRoom_post = async (req, res) => {
         $push: { rooms: room._id },
       });
       await Promise.all([historyPromise, userPromise]);
-      res.status(201).json("Room created successfully!");
+      res
+        .status(201)
+        .json({ message: "Room created successfully!", roomId: room._id });
     }
   } catch (err) {
     //In case user uploaded a file, remove the temp path made by multer with files
